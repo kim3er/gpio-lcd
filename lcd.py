@@ -71,6 +71,7 @@ class Lcd:
 
 	def __del__(self):
 		RPIO.output(LED_ON, False)
+		RPIO.cleanup()
 		print "LCD destroyed"
 
 	def lcd_init(self):
