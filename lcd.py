@@ -19,7 +19,7 @@
 # 16: LCD Backlight GND
 
 #import
-import RPi.GPIO as GPIO
+import RPIO
 import time
 
 # Define GPIO to LCD mapping
@@ -51,26 +51,26 @@ right = 3
 
 class Lcd:
 	def __init__(self):
-		GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
-		GPIO.setup(LCD_E, GPIO.OUT)  # E
-		GPIO.setup(LCD_RS, GPIO.OUT) # RS
-		GPIO.setup(LCD_D4, GPIO.OUT) # DB4
-		GPIO.setup(LCD_D5, GPIO.OUT) # DB5
-		GPIO.setup(LCD_D6, GPIO.OUT) # DB6
-		GPIO.setup(LCD_D7, GPIO.OUT) # DB7
-		GPIO.setup(LED_ON, GPIO.OUT) # Backlight enable
+		RPIO.setmode(RPIO.BCM)       # Use BCM GPIO numbers
+		RPIO.setup(LCD_E, RPIO.OUT)  # E
+		RPIO.setup(LCD_RS, RPIO.OUT) # RS
+		RPIO.setup(LCD_D4, RPIO.OUT) # DB4
+		RPIO.setup(LCD_D5, RPIO.OUT) # DB5
+		RPIO.setup(LCD_D6, RPIO.OUT) # DB6
+		RPIO.setup(LCD_D7, RPIO.OUT) # DB7
+		RPIO.setup(LED_ON, RPIO.OUT) # Backlight enable
 
 		# Initialise display
 		self.lcd_init()
 
 		# Toggle backlight off-on
-		GPIO.output(LED_ON, False)
+		RPIO.output(LED_ON, False)
 		time.sleep(1)
-		GPIO.output(LED_ON, True)
+		RPIO.output(LED_ON, True)
 		print "LCD Initialised"
 
 	def __del__(self):
-		GPIO.output(LED_ON, False)
+		RPIO.output(LED_ON, False)
 		print "LCD destroyed"
 
 	def lcd_init(self):
@@ -104,48 +104,48 @@ class Lcd:
 		# mode = True  for character
 		#        False for command
 
-		GPIO.output(LCD_RS, mode) # RS
+		RPIO.output(LCD_RS, mode) # RS
 
 		# High bits
-		GPIO.output(LCD_D4, False)
-		GPIO.output(LCD_D5, False)
-		GPIO.output(LCD_D6, False)
-		GPIO.output(LCD_D7, False)
+		RPIO.output(LCD_D4, False)
+		RPIO.output(LCD_D5, False)
+		RPIO.output(LCD_D6, False)
+		RPIO.output(LCD_D7, False)
 		if bits&0x10==0x10:
-			GPIO.output(LCD_D4, True)
+			RPIO.output(LCD_D4, True)
 		if bits&0x20==0x20:
-			GPIO.output(LCD_D5, True)
+			RPIO.output(LCD_D5, True)
 		if bits&0x40==0x40:
-			GPIO.output(LCD_D6, True)
+			RPIO.output(LCD_D6, True)
 		if bits&0x80==0x80:
-			GPIO.output(LCD_D7, True)
+			RPIO.output(LCD_D7, True)
 
 		# Toggle 'Enable' pin
 		time.sleep(E_DELAY)    
-		GPIO.output(LCD_E, True)  
+		RPIO.output(LCD_E, True)  
 		time.sleep(E_PULSE)
-		GPIO.output(LCD_E, False)  
+		RPIO.output(LCD_E, False)  
 		time.sleep(E_DELAY)      
 
 		# Low bits
-		GPIO.output(LCD_D4, False)
-		GPIO.output(LCD_D5, False)
-		GPIO.output(LCD_D6, False)
-		GPIO.output(LCD_D7, False)
+		RPIO.output(LCD_D4, False)
+		RPIO.output(LCD_D5, False)
+		RPIO.output(LCD_D6, False)
+		RPIO.output(LCD_D7, False)
 		if bits&0x01==0x01:
-			GPIO.output(LCD_D4, True)
+			RPIO.output(LCD_D4, True)
 		if bits&0x02==0x02:
-			GPIO.output(LCD_D5, True)
+			RPIO.output(LCD_D5, True)
 		if bits&0x04==0x04:
-			GPIO.output(LCD_D6, True)
+			RPIO.output(LCD_D6, True)
 		if bits&0x08==0x08:
-			GPIO.output(LCD_D7, True)
+			RPIO.output(LCD_D7, True)
 
 		# Toggle 'Enable' pin
 		time.sleep(E_DELAY)    
-		GPIO.output(LCD_E, True)  
+		RPIO.output(LCD_E, True)  
 		time.sleep(E_PULSE)
-		GPIO.output(LCD_E, False)  
+		RPIO.output(LCD_E, False)  
 		time.sleep(E_DELAY)
 
 	def write_line(self, message, line = LCD_LINE_1, style = left):
