@@ -51,7 +51,6 @@ right = 3
 
 class Lcd:
 
-	led_state = True
 
 	def __init__(self, setmode = True):
 		if setmode:
@@ -75,6 +74,7 @@ class Lcd:
 		GPIO.output(LED_ON, True)
 
 		# LED Light Switch Event
+		self.led_state = True
 		GPIO.add_event_detect(4, GPIO.BOTH)
 		GPIO.add_event_callback(4, self.toggle_light)
 
@@ -87,8 +87,8 @@ class Lcd:
 		print "LCD destroyed"
 
 	def toggle_light(self):
-		led_state == not led_state
-		GPIO.output(LED_ON, led_state)
+		self.led_state = not self.led_state
+		GPIO.output(LED_ON, self.led_state)
 
 	def lcd_init(self):
 		# Initialise display
