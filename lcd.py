@@ -19,7 +19,7 @@
 # 16: LCD Backlight GND
 
 #import
-import RPIO
+import RPi.GPIO as GPIO
 import time
 
 # Define GPIO to LCD mapping
@@ -50,8 +50,10 @@ center = 2
 right = 3
 
 class Lcd:
-	def __init__(self):
-		RPIO.setmode(RPIO.BCM)       # Use BCM GPIO numbers
+	def __init__(self, setmode = True):
+		if setmode:
+			RPIO.setmode(RPIO.BCM)       # Use BCM GPIO numbers
+			
 		RPIO.setup(LCD_E, RPIO.OUT)  # E
 		RPIO.setup(LCD_RS, RPIO.OUT) # RS
 		RPIO.setup(LCD_D4, RPIO.OUT) # DB4
