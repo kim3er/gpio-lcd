@@ -75,7 +75,8 @@ class Lcd:
 
 		# LED Light Switch Event
 		self.led_state = True
-		GPIO.add_event_detect(4, GPIO.RISING, bouncetime=500)
+		self.led_last_event = time.time()
+		GPIO.add_event_detect(4, GPIO.RISING, bouncetime=1000)
 		GPIO.add_event_callback(4, self.toggle_light)
 
 		print "LCD Initialised"
@@ -87,8 +88,10 @@ class Lcd:
 		print "LCD destroyed"
 
 	def toggle_light(self, arg):
-		self.led_state = not self.led_state
-		GPIO.output(LED_ON, self.led_state)
+		if (time.time() - self.led_last_event) > 1
+			self.led_state = not self.led_state
+			GPIO.output(LED_ON, self.led_state)
+			self.led_last_event = time.time()
 
 	def lcd_init(self):
 		# Initialise display
