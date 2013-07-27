@@ -50,10 +50,13 @@ center = 2
 right = 3
 
 class Lcd:
+
+	led_state = True
+
 	def __init__(self, setmode = True):
 		if setmode:
 			GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
-			
+
 		GPIO.setup(LCD_E, GPIO.OUT)  # E
 		GPIO.setup(LCD_RS, GPIO.OUT) # RS
 		GPIO.setup(LCD_D4, GPIO.OUT) # DB4
@@ -61,6 +64,7 @@ class Lcd:
 		GPIO.setup(LCD_D6, GPIO.OUT) # DB6
 		GPIO.setup(LCD_D7, GPIO.OUT) # DB7
 		GPIO.setup(LED_ON, GPIO.OUT) # Backlight enable
+		GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # LED Light Switch
 
 		# Initialise display
 		self.lcd_init()
@@ -69,6 +73,11 @@ class Lcd:
 		GPIO.output(LED_ON, False)
 		time.sleep(1)
 		GPIO.output(LED_ON, True)
+
+		# LED Light Switch Event
+		GPIO.add_event_detect(4, GPIO.BOTH)
+		GPIO.add_event_callback(4, self.toggle_light)
+
 		print "LCD Initialised"
 
 	def __del__(self):
@@ -76,6 +85,10 @@ class Lcd:
 		GPIO.output(LED_ON, False)
 		GPIO.cleanup()
 		print "LCD destroyed"
+
+	def toggle_light(self):
+		led_state == not led_state
+		GPIO.output(LED_ON, led_state)
 
 	def lcd_init(self):
 		# Initialise display
